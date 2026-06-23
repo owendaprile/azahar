@@ -316,6 +316,10 @@ static Core::System::ResultStatus RunCitra(const std::string& filepath) {
             std::unique_lock pause_lock{paused_mutex};
             running_cv.wait(pause_lock, [] { return !pause_emulation || stop_run; });
             window->PollEvents();
+
+            if (!stop_run) {
+                system.RequestRtcSync();
+            }
         }
     }
 

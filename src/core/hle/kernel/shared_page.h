@@ -128,6 +128,9 @@ public:
     /// Gets the system time in milliseconds since the year 1900.
     u64 GetSystemTimeSince1900() const;
 
+    /// Set the RTC to the current system clock.
+    void SyncRtcToSystemClock();
+
 private:
     void UpdateTimeCallback(std::uintptr_t user_data, int cycles_late);
     Core::Timing& timing;

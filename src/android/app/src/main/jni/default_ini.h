@@ -487,6 +487,11 @@ static const char* android_config_default_file_content = (BOOST_HANA_STRING(R"(
 # Defaults to 0.
 )") DECLARE_KEY(init_ticks_override) BOOST_HANA_STRING(R"(
 
+# When using the system clock, set the RTC to the current system time when
+# emulation resumes or a save state is loaded.
+# 0: Off, 1: On (default)
+)") DECLARE_KEY(sync_rtc_to_system_time) BOOST_HANA_STRING(R"(
+
 # Number of steps per hour reported by the pedometer. Range from 0 to 65,535.
 # Defaults to 0.
 )") DECLARE_KEY(steps_per_hour) BOOST_HANA_STRING(R"(

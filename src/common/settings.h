@@ -502,6 +502,7 @@ struct Values {
     Setting<s64> init_time_offset{0, Keys::init_time_offset};
     Setting<InitTicks> init_ticks_type{InitTicks::Random, Keys::init_ticks_type};
     Setting<s64> init_ticks_override{0, Keys::init_ticks_override};
+    Setting<bool> sync_rtc_to_system_time{true, Keys::sync_rtc_to_system_time};
     Setting<bool> plugin_loader_enabled{false, Keys::plugin_loader};
     Setting<bool> allow_plugin_loader{true, Keys::allow_plugin_loader};
     Setting<u16> steps_per_hour{0, Keys::steps_per_hour};

@@ -270,6 +270,7 @@ void Config::ReadValues() {
     }
     ReadSetting("System", Settings::values.init_ticks_type);
     ReadSetting("System", Settings::values.init_ticks_override);
+    ReadSetting("System", Settings::values.sync_rtc_to_system_time);
     ReadSetting("System", Settings::values.plugin_loader_enabled);
     ReadSetting("System", Settings::values.allow_plugin_loader);
     ReadSetting("System", Settings::values.steps_per_hour);

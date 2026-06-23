@@ -207,6 +207,9 @@
     <string name="device_clock">Device Clock</string>
     <string name="simulated_clock">Simulated Clock</string>
     <string name="simulated_clock_description">If the clock is set to \"Simulated clock\", this changes the fixed date and time to start at.</string>
+    <string name="sync_rtc_to_system_time">Sync Clock to System Time</string>
+    <string name="sync_rtc_to_system_time_description">Updates the emulated 3DS clock to the current time when emulation resumes or a save state is loaded, keeping the in-game time accurate after the app has been in the background.</string>
+    <string name="sync_rtc_to_system_time_disabled">This setting is only available when the clock is set to \"Device Clock\".</string>
     <string name="profile_settings">Profile Settings</string>
     <string name="emulated_region">Region</string>
     <string name="emulated_language">Language</string>

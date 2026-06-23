@@ -24,6 +24,7 @@ foreach(KEY IN ITEMS
     "init_time_offset"
     "init_ticks_type"
     "init_ticks_override"
+    "sync_rtc_to_system_time"
     "plugin_loader"
     "allow_plugin_loader"
     "steps_per_hour"

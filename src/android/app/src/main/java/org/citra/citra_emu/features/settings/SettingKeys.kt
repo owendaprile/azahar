@@ -24,6 +24,7 @@ object SettingKeys {
     external fun init_time(): String
     external fun init_ticks_type(): String
     external fun init_ticks_override(): String
+    external fun sync_rtc_to_system_time(): String
     external fun plugin_loader(): String
     external fun allow_plugin_loader(): String
     external fun steps_per_hour(): String

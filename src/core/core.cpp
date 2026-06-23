@@ -33,6 +33,7 @@
 #include "core/hle/kernel/ipc_debugger/recorder.h"
 #include "core/hle/kernel/kernel.h"
 #include "core/hle/kernel/process.h"
+#include "core/hle/kernel/shared_page.h"
 #include "core/hle/kernel/thread.h"
 #include "core/hle/service/apt/applet_manager.h"
 #include "core/hle/service/apt/apt.h"
@@ -144,6 +145,10 @@ System::ResultStatus System::RunLoop(bool tight_loop) {
         break;
     }
 
+    if (rtc_sync_requested.exchange(false) && kernel.get()) {
+        kernel->GetSharedPageHandler().SyncRtcToSystemClock();
+    }
+
     if (save_state_request_status == SaveStateStatus::LOADING && kernel.get() &&
         !kernel->AreAsyncOperationsPending()) {
         const u32 slot = save_state_slot;
@@ -152,6 +157,7 @@ System::ResultStatus System::RunLoop(bool tight_loop) {
         try {
             System::LoadState(slot);
             LOG_INFO(Core, "Load completed");
+            kernel->GetSharedPageHandler().SyncRtcToSystemClock();
         } catch (const std::exception& e) {
             LOG_ERROR(Core, "Error loading: {}", e.what());
             status_details = e.what();

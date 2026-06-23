@@ -333,6 +333,8 @@ void ConfigureSystem::SetConfiguration() {
     ui->edit_init_ticks_value->setText(
         QString::number(Settings::values.init_ticks_override.GetValue()));
 
+    ui->sync_rtc_to_system_time->setChecked(Settings::values.sync_rtc_to_system_time.GetValue());
+
     ui->spinBox_steps_per_hour->setValue(Settings::values.steps_per_hour.GetValue());
 
     cfg = Service::CFG::GetModule(system);
@@ -476,6 +478,8 @@ void ConfigureSystem::ApplyConfiguration() {
         Settings::values.init_ticks_override =
             static_cast<s64>(ui->edit_init_ticks_value->text().toLongLong());
 
+        Settings::values.sync_rtc_to_system_time.SetValue(ui->sync_rtc_to_system_time->isChecked());
+
         Settings::values.steps_per_hour = static_cast<u16>(ui->spinBox_steps_per_hour->value());
 
         s64 time_offset_time = ui->edit_init_time_offset_time->time().msecsSinceStartOfDay() / 1000;
@@ -548,6 +552,8 @@ void ConfigureSystem::UpdateInitTime(int init_clock) {
     ui->label_init_time_offset->setVisible(!is_fixed_time && is_global);
     ui->edit_init_time_offset_days->setVisible(!is_fixed_time && is_global);
     ui->edit_init_time_offset_time->setVisible(!is_fixed_time && is_global);
+
+    ui->sync_rtc_to_system_time->setEnabled(!is_fixed_time);
 }
 
 void ConfigureSystem::UpdateInitTicks(int init_ticks_type) {
@@ -745,6 +751,7 @@ void ConfigureSystem::SetupPerGameUI() {
     ui->edit_init_time_offset_days->setVisible(false);
     ui->edit_init_time_offset_time->setVisible(false);
     ui->edit_init_ticks_value->setVisible(false);
+    ui->sync_rtc_to_system_time->setVisible(false);
     ui->toggle_system_setup->setVisible(false);
     ui->button_regenerate_console_id->setVisible(false);
     ui->button_regenerate_mac->setVisible(false);

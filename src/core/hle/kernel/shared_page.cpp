@@ -8,6 +8,7 @@
 #include <boost/serialization/binary_object.hpp>
 #include "common/archives.h"
 #include "common/assert.h"
+#include "common/logging/log.h"
 #include "common/settings.h"
 #include "core/core.h"
 #include "core/core_timing.h"
@@ -123,6 +124,40 @@ u64 Handler::GetSystemTimeSince1900() const {
     // 3DS console time uses Jan 1 1900 as internal epoch,
     // so we use the milliseconds between 1900 and 2000 as base console time
     return 3155673600000ULL + GetSystemTimeSince2000();
+}
+
+void Handler::SyncRtcToSystemClock() {
+    if (Settings::values.init_clock.GetValue() != Settings::InitClock::SystemTime) {
+        return;
+    }
+
+    if (!Settings::values.sync_rtc_to_system_time.GetValue()) {
+        return;
+    }
+
+    const auto play_mode = Core::System::GetInstance().Movie().GetPlayMode();
+    if (play_mode == Core::Movie::PlayMode::Recording ||
+        play_mode == Core::Movie::PlayMode::Playing) {
+        return;
+    }
+
+    // Current time = init time + CPU uptime.
+    const std::chrono::seconds new_init_time =
+        GetInitTime(0) - std::chrono::duration_cast<std::chrono::seconds>(timing.GetGlobalTimeUs());
+
+    // Prevent time from jumping backwards to avoid possible time travel penalties.
+    if (new_init_time <= init_time) {
+        LOG_DEBUG(Kernel, "Skipping RTC sync: RTC is ahead of system time (new_init_time={}, init_time={})", new_init_time.count(), init_time.count());
+        return;
+    }
+
+    LOG_DEBUG(Kernel, "Synced RTC to system clock, init_time={}", new_init_time.count());
+
+    init_time = new_init_time;
+
+    // Trigger a new time update event.
+    timing.RemoveEvent(update_time_event);
+    UpdateTimeCallback(0, 0);
 }
 
 void Handler::UpdateTimeCallback(std::uintptr_t user_data, int cycles_late) {

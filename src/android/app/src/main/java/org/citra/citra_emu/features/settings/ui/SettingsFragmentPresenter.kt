@@ -578,6 +578,17 @@ class SettingsFragmentPresenter(private val fragmentView: SettingsFragmentView) 
                     StringSetting.INIT_TIME.defaultValue
                 )
             )
+            add(
+                SwitchSetting(
+                    BooleanSetting.SYNC_RTC_TO_SYSTEM_TIME,
+                    R.string.sync_rtc_to_system_time,
+                    R.string.sync_rtc_to_system_time_description,
+                    BooleanSetting.SYNC_RTC_TO_SYSTEM_TIME.key,
+                    BooleanSetting.SYNC_RTC_TO_SYSTEM_TIME.defaultValue,
+                    isEnabled = IntSetting.INIT_CLOCK.int == 0,
+                    disabledMessage = R.string.sync_rtc_to_system_time_disabled
+                )
+            )
 
             add(HeaderSetting(R.string.plugin_loader))
             add(

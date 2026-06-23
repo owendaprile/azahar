@@ -2589,6 +2589,10 @@ void GMainWindow::OnResumeGame(bool first_start) {
 
     PreventOSSleep();
 
+    if (!first_start && system.IsPoweredOn()) {
+        system.RequestRtcSync();
+    }
+
     emu_thread->SetRunning(true);
     system.frame_limiter.SetFrameAdvancing(false);
     graphics_api_button->setEnabled(false);

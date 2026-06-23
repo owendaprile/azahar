@@ -154,6 +154,11 @@ public:
         SendSignal(Signal::Shutdown);
     }
 
+    /// Request that the RTC be synced to the host system clock.
+    void RequestRtcSync() {
+        rtc_sync_requested = true;
+    }
+
     /**
      * Load an executable application.
      * @param emu_window Reference to the host-system window used for video output and keyboard
@@ -501,6 +506,7 @@ private:
     SaveStateStatus save_state_request_status = SaveStateStatus::NONE;
     u32 save_state_slot = 0;
     std::chrono::steady_clock::time_point save_state_request_time{};
+    std::atomic_bool rtc_sync_requested{false};
 
     ResultStatus status = ResultStatus::Success;
     std::string status_details = "";
