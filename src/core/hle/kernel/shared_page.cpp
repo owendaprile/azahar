@@ -175,9 +175,17 @@ SharedPageDef& Handler::GetSharedPage() {
 }
 
 template <class Archive>
-void Handler::serialize(Archive& ar, const unsigned int) {
+void Handler::serialize(Archive& ar, const unsigned int file_version) {
     ar& boost::serialization::base_object<BackingMem>(*this);
     ar& boost::serialization::make_binary_object(&shared_page, sizeof(shared_page));
+    // Save init_time so the RTC is restored with the same value when loading.
+    if (file_version >= 1) {
+        s64 init_time_seconds = init_time.count();
+        ar& init_time_seconds;
+        if (Archive::is_loading::value) {
+            init_time = std::chrono::seconds{init_time_seconds};
+        }
+    }
 }
 SERIALIZE_IMPL(Handler)
 
